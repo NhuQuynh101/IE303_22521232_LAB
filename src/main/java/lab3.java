@@ -11,6 +11,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
+import javafx.animation.ParallelTransition;
+import javafx.util.Duration;
 import java.io.InputStream;
 
 public class lab3 extends Application {
@@ -40,6 +45,7 @@ public class lab3 extends Application {
     private Label productBrandLabel;
     private Label productDescLabel;
     private ImageView selectedProductImage;
+    private VBox productDetailPanel;
     
     @Override
     public void start(Stage primaryStage) {
@@ -70,7 +76,7 @@ public class lab3 extends Application {
         productScrollPane.setStyle("-fx-background: #f5f5f5; -fx-background-color: #f5f5f5;");
         
         // Tạo panel thông tin sản phẩm
-        VBox productDetailPanel = createProductDetailPanel();
+        productDetailPanel = createProductDetailPanel();
         
         // Tạo layout chính với sản phẩm bên trái và thông tin bên phải
         HBox mainContent = new HBox(20);
@@ -92,30 +98,30 @@ public class lab3 extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        // Chọn sản phẩm đầu tiên mặc định
+        // Chọn sản phẩm đầu tiên mặc định với hiệu ứng
         if (productCards.length > 0) {
-            selectProduct(0);
+            selectProductWithAnimation(0);
         }
     }
     
     private void initializeProducts() {
         products = new Product[] {
             new Product("4DFWD PULSE SHOES", "$160.00", "Adidas", 
-                       "This product is excluded from all promotional discounts and offers.", "img1.png"),
+                       "This product is excluded from all promotional discounts and offers. Revolutionary 4D technology provides superior energy return.", "img1.png"),
             new Product("FORUM MID SHOES", "$100.00", "Adidas", 
-                       "NMD City Sock 2 - Classic urban style with modern comfort.", "img2.png"),
+                       "NMD City Sock 2 - Classic urban style with modern comfort. Perfect for street fashion and everyday wear.", "img2.png"),
             new Product("SUPERNOVA SHOES", "$150.00", "Adidas", 
-                       "NMD City Sock 2 - Premium running shoes for everyday athletes.", "img3.png"),
+                       "NMD City Sock 2 - Premium running shoes for everyday athletes. Engineered for maximum performance.", "img3.png"),
             new Product("ADIDAS RUNNING", "$160.00", "Adidas", 
-                       "NMD City Sock 2 - High-performance running shoes.", "img4.png"),
+                       "NMD City Sock 2 - High-performance running shoes. Boost technology for ultimate energy return.", "img4.png"),
             new Product("ADIDAS SPORT", "$120.00", "Adidas", 
-                       "NMD City Sock 2 - Versatile sports shoes for active lifestyle.", "img5.png"),
+                       "NMD City Sock 2 - Versatile sports shoes for active lifestyle. Lightweight and breathable design.", "img5.png"),
             new Product("4DFWD PULSE SHOES", "$160.00", "Adidas", 
-                       "This product is excluded from all promotional discounts and offers.", "img6.png"),
+                       "This product is excluded from all promotional discounts and offers. Next-generation running technology.", "img6.png"),
             new Product("4DFWD PULSE SHOES", "$160.00", "Adidas", 
-                       "This product is excluded from all promotional discounts and offers.", "img1.png"),
+                       "This product is excluded from all promotional discounts and offers. Innovation meets style and comfort.", "img1.png"),
             new Product("FORUM MID SHOES", "$100.00", "Adidas", 
-                       "This product is excluded from all promotional discounts and offers.", "img2.png")
+                       "This product is excluded from all promotional discounts and offers. Timeless design with modern updates.", "img2.png")
         };
     }
     
@@ -180,7 +186,8 @@ public class lab3 extends Application {
         brandLabel.setTextFill(Color.web("#666"));
         
         // Mô tả
-        Label descLabel = new Label(product.description);
+        Label descLabel = new Label(product.description.length() > 50 ? 
+                                  product.description.substring(0, 50) + "..." : product.description);
         descLabel.setFont(Font.font("Arial", 9));
         descLabel.setTextFill(Color.web("#888"));
         descLabel.setWrapText(true);
@@ -194,25 +201,45 @@ public class lab3 extends Application {
         
         card.getChildren().addAll(imageView, nameLabel, brandLabel, descLabel, priceLabel);
         
-        // Thêm sự kiện click
-        card.setOnMouseClicked(e -> selectProduct(index));
+        // Thêm sự kiện click với animation
+        card.setOnMouseClicked(e -> selectProductWithAnimation(index));
         
-        // Thêm hiệu ứng hover
+        // Thêm hiệu ứng hover với animation
         card.setOnMouseEntered(e -> {
             if (selectedCard != card) {
-                card.setStyle("-fx-background-color: #f8f9fa; -fx-border-color: #007bff; -fx-border-width: 2; " +
-                            "-fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,123,255,0.2), 8, 0, 0, 3);");
+                animateCardHover(card, true);
             }
         });
         
         card.setOnMouseExited(e -> {
             if (selectedCard != card) {
-                card.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 2; " +
-                            "-fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
+                animateCardHover(card, false);
             }
         });
         
         return card;
+    }
+    
+    private void animateCardHover(VBox card, boolean isHover) {
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), card);
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(200), card);
+        
+        if (isHover) {
+            scaleTransition.setToX(1.05);
+            scaleTransition.setToY(1.05);
+            fadeTransition.setToValue(0.9);
+            card.setStyle("-fx-background-color: #f8f9fa; -fx-border-color: #007bff; -fx-border-width: 2; " +
+                        "-fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,123,255,0.3), 10, 0, 0, 5);");
+        } else {
+            scaleTransition.setToX(1.0);
+            scaleTransition.setToY(1.0);
+            fadeTransition.setToValue(1.0);
+            card.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 2; " +
+                        "-fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
+        }
+        
+        ParallelTransition parallelTransition = new ParallelTransition(scaleTransition, fadeTransition);
+        parallelTransition.play();
     }
     
     private VBox createProductDetailPanel() {
@@ -270,26 +297,98 @@ public class lab3 extends Application {
         return panel;
     }
     
-    private void selectProduct(int index) {
-        // Bỏ chọn sản phẩm trước đó
+    private void selectProductWithAnimation(int index) {
+        // Animation cho việc bỏ chọn card cũ
         if (selectedCard != null) {
-            selectedCard.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 2; " +
-                                "-fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
+            animateCardDeselection(selectedCard);
         }
         
-        // Chọn sản phẩm mới
+        // Animation cho việc chọn card mới
         selectedCard = productCards[index];
-        selectedCard.setStyle("-fx-background-color: #e3f2fd; -fx-border-color: #2196f3; -fx-border-width: 3; " +
-                            "-fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(33,150,243,0.3), 10, 0, 0, 4);");
+        animateCardSelection(selectedCard);
         
-        // Cập nhật thông tin sản phẩm
+        // Animation cho panel thông tin với delay
+        animateProductInfoUpdate(index);
+    }
+    
+    private void animateCardDeselection(VBox card) {
+        ScaleTransition scaleOut = new ScaleTransition(Duration.millis(150), card);
+        scaleOut.setToX(1.0);
+        scaleOut.setToY(1.0);
+        
+        scaleOut.setOnFinished(e -> {
+            card.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 2; " +
+                        "-fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
+        });
+        
+        scaleOut.play();
+    }
+    
+    private void animateCardSelection(VBox card) {
+        // Scale animation
+        ScaleTransition scaleIn = new ScaleTransition(Duration.millis(300), card);
+        scaleIn.setFromX(1.0);
+        scaleIn.setFromY(1.0);
+        scaleIn.setToX(1.08);
+        scaleIn.setToY(1.08);
+        
+        // Bounce effect
+        scaleIn.setAutoReverse(true);
+        scaleIn.setCycleCount(2);
+        
+        scaleIn.setOnFinished(e -> {
+            card.setStyle("-fx-background-color: #e3f2fd; -fx-border-color: #2196f3; -fx-border-width: 3; " +
+                        "-fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(33,150,243,0.4), 15, 0, 0, 6);");
+        });
+        
+        scaleIn.play();
+    }
+    
+    private void animateProductInfoUpdate(int index) {
+        // Fade out current info
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(200), productDetailPanel);
+        fadeOut.setToValue(0.3);
+        
+        // Slide effect
+        TranslateTransition slideOut = new TranslateTransition(Duration.millis(200), productDetailPanel);
+        slideOut.setToX(20);
+        
+        ParallelTransition hideTransition = new ParallelTransition(fadeOut, slideOut);
+        
+        hideTransition.setOnFinished(e -> {
+            // Update product info
+            updateProductInfo(index);
+            
+            // Fade in new info
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(300), productDetailPanel);
+            fadeIn.setToValue(1.0);
+            
+            // Slide back
+            TranslateTransition slideIn = new TranslateTransition(Duration.millis(300), productDetailPanel);
+            slideIn.setToX(0);
+            
+            // Scale effect for the image
+            ScaleTransition imageScale = new ScaleTransition(Duration.millis(400), selectedProductImage);
+            imageScale.setFromX(0.8);
+            imageScale.setFromY(0.8);
+            imageScale.setToX(1.0);
+            imageScale.setToY(1.0);
+            
+            ParallelTransition showTransition = new ParallelTransition(fadeIn, slideIn, imageScale);
+            showTransition.play();
+        });
+        
+        hideTransition.play();
+    }
+    
+    private void updateProductInfo(int index) {
         Product selectedProduct = products[index];
         productNameLabel.setText(selectedProduct.name);
         productBrandLabel.setText(selectedProduct.brand);
         productPriceLabel.setText(selectedProduct.price);
         productDescLabel.setText(selectedProduct.description);
         
-        // Cập nhật hình ảnh
+        // Cập nhật hình ảnh với hiệu ứng
         try {
             InputStream imageStream = getClass().getResourceAsStream("/" + selectedProduct.imagePath);
             if (imageStream != null) {
@@ -302,6 +401,11 @@ public class lab3 extends Application {
         } catch (Exception e) {
             System.out.println("Lỗi khi tải hình ảnh: " + selectedProduct.imagePath + " - " + e.getMessage());
         }
+    }
+    
+    // Deprecated method - keeping for compatibility
+    private void selectProduct(int index) {
+        selectProductWithAnimation(index);
     }
     
     public static void main(String[] args) {

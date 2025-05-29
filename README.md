@@ -1,6 +1,6 @@
 # Adidas Shoe Store - Lab 3
 
-Ứng dụng bán giày Adidas được xây dựng bằng JavaFX với các tính năng:
+Ứng dụng bán giày Adidas được xây dựng bằng JavaFX với các tính năng và hiệu ứng động:
 
 ## 🎯 Tính năng
 
@@ -9,6 +9,12 @@
 ✅ **Panel thông tin chi tiết** - hiển thị thông tin sản phẩm được chọn ở phía bên phải  
 ✅ **Giao diện đẹp mắt** với hiệu ứng hover, shadow và responsive design  
 ✅ **Architecture pattern** - Sử dụng Maven để quản lý dependencies  
+🆕 **Hiệu ứng động nâng cao**:
+   - **Scale Animation**: Card sản phẩm có hiệu ứng bounce khi được chọn
+   - **Fade Transition**: Panel thông tin fade in/out mượt mà khi chuyển sản phẩm
+   - **Slide Effect**: Thông tin sản phẩm slide từ phải sang trái
+   - **Hover Animation**: Card có hiệu ứng scale và shadow khi hover chuột
+   - **Image Scale**: Hình ảnh sản phẩm có hiệu ứng zoom khi cập nhật
 
 ## 🚀 Cách chạy nhanh
 
@@ -70,7 +76,7 @@ IE303_22521232_LAB/
 ├── src/
 │   └── main/
 │       ├── java/
-│       │   └── lab3.java          # File ứng dụng chính
+│       │   └── lab3.java          # File ứng dụng chính với animations
 │       └── resources/
 │           ├── img1.png           # Hình ảnh sản phẩm
 │           ├── img2.png
@@ -88,9 +94,15 @@ IE303_22521232_LAB/
 
 1. **Khởi động ứng dụng** - Chạy script `./run.sh` hoặc `run.bat`
 2. **Xem danh sách sản phẩm** - 8 sản phẩm hiển thị dạng lưới 4x2
-3. **Chọn sản phẩm** - Click vào bất kỳ sản phẩm nào để chọn
-4. **Xem thông tin chi tiết** - Panel bên phải sẽ hiển thị thông tin của sản phẩm được chọn
-5. **Hiệu ứng visual** - Hover chuột để xem hiệu ứng, sản phẩm được chọn có viền xanh
+3. **Hover chuột** - Di chuột qua sản phẩm để xem hiệu ứng hover với scale và shadow
+4. **Chọn sản phẩm** - Click vào bất kỳ sản phẩm nào để chọn:
+   - Card sản phẩm sẽ có hiệu ứng bounce và scale lên
+   - Viền chuyển thành màu xanh với shadow mạnh hơn
+   - Panel thông tin bên phải sẽ fade out và slide
+5. **Xem thông tin chi tiết** - Panel bên phải sẽ fade in với thông tin mới:
+   - Hình ảnh sản phẩm zoom từ nhỏ đến kích thước đầy đủ
+   - Text thông tin slide vào từ phải
+   - Hiệu ứng mượt mà và chuyên nghiệp
 
 ## ⚙️ Tính năng kỹ thuật
 
@@ -100,6 +112,29 @@ IE303_22521232_LAB/
 - **Modern UI**: Shadow effects, rounded corners, color schemes
 - **Resource Management**: Hình ảnh được quản lý trong classpath resources
 - **Maven Integration**: Dependency management và build automation
+- **Animation Framework**: Sử dụng JavaFX Animation API:
+  - `ScaleTransition` cho hiệu ứng scale/zoom
+  - `FadeTransition` cho hiệu ứng fade in/out
+  - `TranslateTransition` cho hiệu ứng slide
+  - `ParallelTransition` để chạy nhiều animation cùng lúc
+  - Timing và easing tối ưu cho UX mượt mà
+
+## 🎨 Hiệu ứng và Animation
+
+### Card Product Animation
+- **Hover Effect**: Scale 1.05x + fade + shadow enhancement (200ms)
+- **Selection Bounce**: Scale 1.08x với auto-reverse (300ms)
+- **Deselection**: Scale về 1.0x với fade (150ms)
+
+### Product Info Panel Animation
+- **Hide Transition**: Fade out (0.3 opacity) + slide right 20px (200ms)
+- **Show Transition**: Fade in + slide back + image scale (300-400ms)
+- **Smooth Timing**: Các animation được chain với onFinished events
+
+### Visual Feedback
+- **Selected State**: Blue border (#2196f3) + enhanced shadow
+- **Hover State**: Blue border (#007bff) + scale + shadow
+- **Normal State**: Gray border (#ddd) + subtle shadow
 
 ## 🚨 Troubleshooting
 
@@ -129,24 +164,31 @@ Unsupported class file major version
 ```
 **Giải pháp**: Cài đặt Java 11 hoặc cao hơn.
 
-## 📸 Screenshots
+### Animation lag hoặc choppy
+**Giải pháp**: 
+- Đảm bảo có đủ RAM và GPU acceleration
+- JavaFX sử dụng hardware acceleration tự động
+- Giảm duration của animation nếu cần
+
+## 📸 Screenshots & Demo
 
 ### Giao diện chính
-- Hiển thị 8 sản phẩm trong lưới 4x2
-- Panel thông tin chi tiết bên phải
+- Hiển thị 8 sản phẩm trong lưới 4x2 với animations
+- Panel thông tin chi tiết bên phải với smooth transitions
 - Header với tên cửa hàng
 
 ### Tính năng tương tác
-- Click để chọn sản phẩm (viền xanh)
-- Hover effects với màu sắc thay đổi
-- Thông tin sản phẩm cập nhật real-time
+- **Click Selection**: Bounce effect + blue border + enhanced shadow
+- **Hover Effects**: Scale + fade + shadow animation
+- **Info Panel**: Slide + fade + image zoom transitions
+- **Thông tin sản phẩm**: Cập nhật real-time với smooth animations
 
 ## 👨‍💻 Thông tin tác giả
 
-**Sinh viên**: Điền Hồ  
+**Sinh viên**: Ngô Thị Như Quỳnh 
 **MSSV**: 22521232  
-**Môn học**: IE303 - Công nghệ Web và Ứng dụng  
-**Lab**: Lab 3 - JavaFX Application  
+**Môn học**: IE303 - Công nghệ Java  
+**Lab**: Lab 3 - 
 
 ## 📄 License
 
