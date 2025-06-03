@@ -84,6 +84,8 @@ IE303_22521232_LAB/
 │           ├── img4.png
 │           ├── img5.png
 │           └── img6.png
+├── demo/
+│   └── Demo.mov                   # Video demo ứng dụng
 ├── pom.xml                        # Maven configuration
 ├── run.sh                         # Script chạy cho MacOS/Linux  
 ├── run.bat                        # Script chạy cho Windows
@@ -198,7 +200,14 @@ This project is for educational purposes only.
 
 ### Xem video demo ứng dụng:
 
-https://github.com/user-attachments/assets/[video-id]
+<video width="800" controls>
+  <source src="demo/Demo.mov" type="video/quicktime">
+  <source src="demo/Demo.mp4" type="video/mp4">
+  Trình duyệt của bạn không hỗ trợ video HTML5.
+</video>
+
+<!-- Nếu video không hiển thị, uncomment dòng dưới sau khi có file GIF -->
+<!-- ![Demo GIF](demo/demo.gif) -->
 
 *Video demo hiển thị tất cả tính năng và hiệu ứng của ứng dụng bao gồm:*
 - ✨ **Animations**: Hiệu ứng bounce, fade, scale và slide transitions
@@ -208,14 +217,17 @@ https://github.com/user-attachments/assets/[video-id]
 - 📋 **Info Panel**: Panel thông tin chi tiết với smooth transitions
 
 ### File video demo:
-- **File**: `Demo.mov`
+- **File**: `demo/Demo.mov`
 - **Kích thước**: 4.2MB
 - **Chất lượng**: HD recording của toàn bộ workflow
 
-> **Lưu ý**: Nếu không xem được video trên GitHub, bạn có thể tải file `2025-06-03 22-15-13.mov` trong repository để xem demo.
+### 🎥 Nội dung video demo:
+1. **Khởi động ứng dụng** - Giao diện chính với 8 sản phẩm
+2. **Hover animations** - Di chuột để xem hiệu ứng scale và shadow
+3. **Selection effects** - Click chọn sản phẩm với bounce animation
+4. **Info panel transitions** - Fade và slide effects khi chuyển sản phẩm  
+5. **Complete workflow** - Toàn bộ user experience từ đầu đến cuối
 
 ---
 
 **🎯 Tóm tắt**: Ứng dụng JavaFX hoàn chỉnh với animations chuyên nghiệp, UI/UX hiện đại và architecture clean code.
-
-## Demo
