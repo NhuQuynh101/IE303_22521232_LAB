@@ -192,42 +192,11 @@ Unsupported class file major version
 **Môn học**: IE303 - Công nghệ Java  
 **Lab**: Lab 3 - 
 
-## 📄 License
-
-This project is for educational purposes only.
 
 ## 🎬 Demo Video
 
-### Xem video demo ứng dụng:
+### Link video: https://drive.google.com/file/d/1IpKwSXqJenOFKHTuNDnom6A4GrikJA9E/view?usp=sharing
 
-<video width="800" controls>
-  <source src="demo/Demo.mov" type="video/quicktime">
-  <source src="demo/Demo.mp4" type="video/mp4">
-  Trình duyệt của bạn không hỗ trợ video HTML5.
-</video>
 
-<!-- Nếu video không hiển thị, uncomment dòng dưới sau khi có file GIF -->
-<!-- ![Demo GIF](demo/demo.gif) -->
 
-*Video demo hiển thị tất cả tính năng và hiệu ứng của ứng dụng bao gồm:*
-- ✨ **Animations**: Hiệu ứng bounce, fade, scale và slide transitions
-- 🖱️ **Interactive UI**: Hover effects và selection animations  
-- 📱 **Responsive Design**: Giao diện đẹp mắt và mượt mà
-- 🛒 **Product Selection**: Chọn sản phẩm với visual feedback
-- 📋 **Info Panel**: Panel thông tin chi tiết với smooth transitions
 
-### File video demo:
-- **File**: `demo/Demo.mov`
-- **Kích thước**: 4.2MB
-- **Chất lượng**: HD recording của toàn bộ workflow
-
-### 🎥 Nội dung video demo:
-1. **Khởi động ứng dụng** - Giao diện chính với 8 sản phẩm
-2. **Hover animations** - Di chuột để xem hiệu ứng scale và shadow
-3. **Selection effects** - Click chọn sản phẩm với bounce animation
-4. **Info panel transitions** - Fade và slide effects khi chuyển sản phẩm  
-5. **Complete workflow** - Toàn bộ user experience từ đầu đến cuối
-
----
-
-**🎯 Tóm tắt**: Ứng dụng JavaFX hoàn chỉnh với animations chuyên nghiệp, UI/UX hiện đại và architecture clean code.
