@@ -193,3 +193,29 @@ Unsupported class file major version
 ## 📄 License
 
 This project is for educational purposes only.
+
+## 🎬 Demo Video
+
+### Xem video demo ứng dụng:
+
+https://github.com/user-attachments/assets/[video-id]
+
+*Video demo hiển thị tất cả tính năng và hiệu ứng của ứng dụng bao gồm:*
+- ✨ **Animations**: Hiệu ứng bounce, fade, scale và slide transitions
+- 🖱️ **Interactive UI**: Hover effects và selection animations  
+- 📱 **Responsive Design**: Giao diện đẹp mắt và mượt mà
+- 🛒 **Product Selection**: Chọn sản phẩm với visual feedback
+- 📋 **Info Panel**: Panel thông tin chi tiết với smooth transitions
+
+### File video demo:
+- **File**: `Demo.mov`
+- **Kích thước**: 4.2MB
+- **Chất lượng**: HD recording của toàn bộ workflow
+
+> **Lưu ý**: Nếu không xem được video trên GitHub, bạn có thể tải file `2025-06-03 22-15-13.mov` trong repository để xem demo.
+
+---
+
+**🎯 Tóm tắt**: Ứng dụng JavaFX hoàn chỉnh với animations chuyên nghiệp, UI/UX hiện đại và architecture clean code.
+
+## Demo
