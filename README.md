@@ -2,6 +2,10 @@
 
 Ứng dụng bán giày Adidas được xây dựng bằng JavaFX với các tính năng và hiệu ứng động:
 
+## 🎬 Demo Video
+
+### Link video: https://drive.google.com/file/d/1IpKwSXqJenOFKHTuNDnom6A4GrikJA9E/view?usp=sharing
+
 ## 🎯 Tính năng
 
 ✅ **Hiển thị 8 sản phẩm giày** với hình ảnh, tên, giá, thương hiệu và mô tả  
@@ -193,9 +197,7 @@ Unsupported class file major version
 **Lab**: Lab 3 - 
 
 
-## 🎬 Demo Video
 
-### Link video: https://drive.google.com/file/d/1IpKwSXqJenOFKHTuNDnom6A4GrikJA9E/view?usp=sharing
 
 
 
