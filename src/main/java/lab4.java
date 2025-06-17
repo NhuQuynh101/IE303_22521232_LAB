@@ -17,27 +17,26 @@ import javafx.animation.TranslateTransition;
 import javafx.animation.ParallelTransition;
 import javafx.util.Duration;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.util.List;
 
-public class lab3 extends Application {
+public class lab4 extends Application {
     
     // Dữ liệu sản phẩm
     private static class Product {
         String name;
-        String price;
+        double price;
         String brand;
         String description;
-        String imagePath;
-        
-        Product(String name, String price, String brand, String description, String imagePath) {
-            this.name = name;
-            this.price = price;
-            this.brand = brand;
-            this.description = description;
-            this.imagePath = imagePath;
-        }
+        String image;
     }
     
-    private Product[] products;
+    private List<Product> products;
     private VBox[] productCards;
     private VBox selectedCard = null;
     private Label productNameLabel;
@@ -49,8 +48,8 @@ public class lab3 extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        // Khởi tạo dữ liệu sản phẩm
-        initializeProducts();
+        // Khởi tạo dữ liệu sản phẩm từ backend
+        initializeProductsFromApi();
         
         // Tạo layout chính
         BorderPane root = new BorderPane();
@@ -94,7 +93,7 @@ public class lab3 extends Application {
         
         // Tạo Scene và Stage
         Scene scene = new Scene(root, 1200, 800);
-        primaryStage.setTitle("Adidas Shoe Store - Lab 3");
+        primaryStage.setTitle("Adidas Shoe Store - Lab 4");
         primaryStage.setScene(scene);
         primaryStage.show();
         
@@ -104,25 +103,27 @@ public class lab3 extends Application {
         }
     }
     
-    private void initializeProducts() {
-        products = new Product[] {
-            new Product("4DFWD PULSE SHOES", "$160.00", "Adidas", 
-                       "This product is excluded from all promotional discounts and offers. Revolutionary 4D technology provides superior energy return.", "img1.png"),
-            new Product("FORUM MID SHOES", "$100.00", "Adidas", 
-                       "NMD City Sock 2 - Classic urban style with modern comfort. Perfect for street fashion and everyday wear.", "img2.png"),
-            new Product("SUPERNOVA SHOES", "$150.00", "Adidas", 
-                       "NMD City Sock 2 - Premium running shoes for everyday athletes. Engineered for maximum performance.", "img3.png"),
-            new Product("ADIDAS RUNNING", "$160.00", "Adidas", 
-                       "NMD City Sock 2 - High-performance running shoes. Boost technology for ultimate energy return.", "img4.png"),
-            new Product("ADIDAS SPORT", "$120.00", "Adidas", 
-                       "NMD City Sock 2 - Versatile sports shoes for active lifestyle. Lightweight and breathable design.", "img5.png"),
-            new Product("4DFWD PULSE SHOES", "$160.00", "Adidas", 
-                       "This product is excluded from all promotional discounts and offers. Next-generation running technology.", "img6.png"),
-            new Product("4DFWD PULSE SHOES", "$160.00", "Adidas", 
-                       "This product is excluded from all promotional discounts and offers. Innovation meets style and comfort.", "img1.png"),
-            new Product("FORUM MID SHOES", "$100.00", "Adidas", 
-                       "This product is excluded from all promotional discounts and offers. Timeless design with modern updates.", "img2.png")
-        };
+    private void initializeProductsFromApi() {
+        try {
+            URL url = new URL("http://localhost:8080/api/products");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            StringBuilder content = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+            con.disconnect();
+            System.out.println("JSON từ backend: " + content.toString()); // debug
+            Gson gson = new Gson();
+            products = gson.fromJson(content.toString(), new TypeToken<List<Product>>(){}.getType());
+            System.out.println("Số lượng sản phẩm lấy được từ API: " + products.size()); // debug
+        } catch (Exception e) {
+            e.printStackTrace();
+            products = List.of();
+        }
     }
     
     private GridPane createProductGrid() {
@@ -132,10 +133,10 @@ public class lab3 extends Application {
         grid.setPadding(new Insets(10));
         grid.setAlignment(Pos.CENTER);
         
-        productCards = new VBox[products.length];
+        productCards = new VBox[products.size()];
         
-        for (int i = 0; i < products.length; i++) {
-            VBox productCard = createProductCard(products[i], i);
+        for (int i = 0; i < products.size(); i++) {
+            VBox productCard = createProductCard(products.get(i), i);
             productCards[i] = productCard;
             
             int row = i / 4;
@@ -154,22 +155,16 @@ public class lab3 extends Application {
         card.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 2; " +
                      "-fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
         
-        // Tạo hình ảnh sản phẩm
+        // Tạo hình ảnh sản phẩm từ backend
         ImageView imageView = new ImageView();
         try {
-            InputStream imageStream = getClass().getResourceAsStream("/" + product.imagePath);
-            if (imageStream != null) {
-                Image image = new Image(imageStream);
-                imageView.setImage(image);
-                imageView.setFitWidth(140);
-                imageView.setFitHeight(100);
-                imageView.setPreserveRatio(true);
-                imageStream.close();
-            } else {
-                System.out.println("Không thể tải hình ảnh: " + product.imagePath);
-            }
+            Image image = new Image("http://localhost:8080/" + product.image, true);
+            imageView.setImage(image);
+            imageView.setFitWidth(140);
+            imageView.setFitHeight(100);
+            imageView.setPreserveRatio(true);
         } catch (Exception e) {
-            System.out.println("Lỗi khi tải hình ảnh: " + product.imagePath + " - " + e.getMessage());
+            System.out.println("Không thể tải hình ảnh: " + product.image);
         }
         
         // Tên sản phẩm
@@ -195,7 +190,7 @@ public class lab3 extends Application {
         descLabel.setMaxHeight(40);
         
         // Giá
-        Label priceLabel = new Label(product.price);
+        Label priceLabel = new Label("$" + product.price);
         priceLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         priceLabel.setTextFill(Color.web("#e74c3c"));
         
@@ -382,24 +377,17 @@ public class lab3 extends Application {
     }
     
     private void updateProductInfo(int index) {
-        Product selectedProduct = products[index];
+        Product selectedProduct = products.get(index);
         productNameLabel.setText(selectedProduct.name);
         productBrandLabel.setText(selectedProduct.brand);
-        productPriceLabel.setText(selectedProduct.price);
+        productPriceLabel.setText("$" + selectedProduct.price);
         productDescLabel.setText(selectedProduct.description);
-        
-        // Cập nhật hình ảnh với hiệu ứng
+        // Load ảnh từ backend
         try {
-            InputStream imageStream = getClass().getResourceAsStream("/" + selectedProduct.imagePath);
-            if (imageStream != null) {
-                Image image = new Image(imageStream);
-                selectedProductImage.setImage(image);
-                imageStream.close();
-            } else {
-                System.out.println("Không thể tải hình ảnh: " + selectedProduct.imagePath);
-            }
+            Image image = new Image("http://localhost:8080/" + selectedProduct.image, true);
+            selectedProductImage.setImage(image);
         } catch (Exception e) {
-            System.out.println("Lỗi khi tải hình ảnh: " + selectedProduct.imagePath + " - " + e.getMessage());
+            System.out.println("Không thể tải hình ảnh: " + selectedProduct.image);
         }
     }
     

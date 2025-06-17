@@ -1,0 +1,4 @@
+com/example/shoestore/model/Product.class
+com/example/shoestore/BackendApplication.class
+com/example/shoestore/service/ProductService.class
+com/example/shoestore/controller/ProductController.class
