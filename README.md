@@ -1,4 +1,4 @@
-# Adidas Shoe Store - Lab 3
+# Adidas Shoe Store - Lab 4
 
 Ứng dụng bán giày Adidas được xây dựng bằng JavaFX với các tính năng và hiệu ứng động:
 
